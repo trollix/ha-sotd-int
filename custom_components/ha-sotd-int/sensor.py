@@ -32,7 +32,7 @@ class SaintOfTheDaySensor(SensorEntity):
         date_key = today.strftime("%m-%d")
         #saints_file = os.path.join(self.hass.config.path("custom_components/ha-sotd-int/data/saints_fr.json"))
         base_path = os.path.dirname(__file__)
-        saints_file =  os.path.join(base_path, "custom_components", "ha-sotd-int", "data", "saints_fr.json")
+        file_path = os.path.join(base_path, "data", "saints_fr.json")
 
         try:
             with open(saints_file, encoding="utf-8") as f:
