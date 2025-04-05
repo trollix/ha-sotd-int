@@ -18,6 +18,7 @@ class SaintOfTheDaySensor(SensorEntity):
         self._attr_icon = "mdi:church"
         self.hass = hass
 
+
     @property
     def name(self):
         return self._name
