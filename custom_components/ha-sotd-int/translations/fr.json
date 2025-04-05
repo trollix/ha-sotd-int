@@ -1,0 +1,19 @@
+{
+    "title": "Saint du jour",
+    "config": {
+      "step": {
+        "user": {
+          "title": "Configurer le capteur Saint du jour"
+        }
+      }
+    },
+    "entity": {
+      "sensor": {
+        "saint_of_the_day": {
+          "name": "Saint du jour",
+          "state": "Nom du saint"
+        }
+      }
+    }
+  }
+  

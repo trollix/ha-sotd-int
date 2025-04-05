@@ -1,0 +1,8 @@
+{
+    "name": "HA - Saint of the Day",
+    "content_in_root": false,
+    "domain": "ha_sotd_int",
+    "documentation": "https://github.com/ton-utilisateur/ha-sotd-int",
+    "version": "1.0.0",
+    "type": "integration"
+  }
