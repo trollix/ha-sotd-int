@@ -1,0 +1,2 @@
+[TYPECHECK]
+ignored-modules=homeassistant,homeassistant.components.sensor,homeassistant.helpers
