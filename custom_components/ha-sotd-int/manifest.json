@@ -4,6 +4,7 @@
     "version": "v0.0.3",
     "documentation": "https://github.com/ton-utilisateur/ha-sotd-int",
     "dependencies": [],
+    "config_flow": true,
     "codeowners": ["@trollix"],
     "requirements": []
   }
