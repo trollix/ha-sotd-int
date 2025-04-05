@@ -29,7 +29,8 @@ class SaintOfTheDaySensor(SensorEntity):
     async def async_update(self):
         today = datetime.date.today()
         date_key = today.strftime("%m-%d")
-        saints_file = os.path.join(self.hass.config.path("custom_components/ha-sotd-int/data/saints_fr.json"))
+        #saints_file = os.path.join(self.hass.config.path("custom_components/ha-sotd-int/data/saints_fr.json"))
+        saints_file =  os.path.join(base_path, "custom_components", "ha-sotd-int", "data", "saints_fr.json")
 
         try:
             with open(saints_file, encoding="utf-8") as f:
