@@ -1,8 +1,8 @@
 {
     "name": "HA - Saint of the Day",
     "content_in_root": false,
-    "domain": "sotd",
+    "domain": "ha_sotd",
     "documentation": "https://github.com/trollix/ha-sotd-int",
-    "version": "v0.2.6",
+    "version": "v0.2.7",
     "type": "integration"
   }
