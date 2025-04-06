@@ -3,7 +3,6 @@ import datetime
 import json
 import os
 import logging
-
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -11,16 +10,18 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass, entry, async_add_entities):
     name = entry.data.get("name")
     language = entry.options.get("language", entry.data.get("language", "fr"))
-    async_add_entities([SaintOfTheDaySensor(name, language)], True)
+    entry_id = entry.entry_id
+    async_add_entities([SaintOfTheDaySensor(name, language, entry_id)], True)
 
 class SaintOfTheDaySensor(SensorEntity):
-    def __init__(self, name, language):
+    def __init__(self, name, language, entry_id):
         self._name = name
         self._language = language
+        self._entry_id = entry_id
         self._state = None
         self._attr_icon = "mdi:calendar"
         self._attr_should_poll = True
-        self._domain = DOMAIN  # utilisé pour device_info
+        self._domain = DOMAIN
 
     @property
     def name(self):
@@ -32,8 +33,8 @@ class SaintOfTheDaySensor(SensorEntity):
 
     @property
     def unique_id(self):
-        return f"{self._domain}_{self._name}"
-    
+        return f"{self._domain}_{self._entry_id}"
+
     @property
     def extra_state_attributes(self):
         return {
