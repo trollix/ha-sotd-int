@@ -11,7 +11,6 @@ LANGUAGES = {
 
 class SotdOptionsFlowHandler(config_entries.OptionsFlow):
     def __init__(self, config_entry):
-        _LOGGER.warning("🧪 INIT OPTIONS FLOW — code mis à jour OK")
         self.config_entry = config_entry
 
     async def async_step_init(self, user_input=None):
@@ -24,9 +23,7 @@ class SotdOptionsFlowHandler(config_entries.OptionsFlow):
                 vol.Required(
                     "language",
                     default=self.config_entry.options.get("language", DEFAULT_LANG)
-                ): vol.In(LANGUAGES)
+                ): vol.In(LANGUAGES),
+                vol.Optional("dummy_option", default=""): str  # champ inutile mais visible
             })
         )
-
-def handler(config_entry):
-    return SotdOptionsFlowHandler(config_entry)
