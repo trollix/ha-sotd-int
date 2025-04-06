@@ -1,0 +1,51 @@
+# 📁 Fichiers système macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 📁 Fichiers système Linux / autres
+*.swp
+*~
+
+# 📁 Environnement Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# 📁 Environnement virtuel
+.venv/
+venv/
+env/
+ENV/
+
+# 📁 VS Code config
+.vscode/
+
+# 📁 Outils de test / couverture
+.coverage
+.tox/
+.nox/
+.cache/
+pytest_cache/
+.pytest_cache/
+htmlcov/
+
+# 📁 Fichiers Home Assistant
+home-assistant.log
+home-assistant_v2.db
+home-assistant_v2.db-shm
+home-assistant_v2.db-wal
+deps/
+
+# 📁 Outils de déploiement
+*.tar.gz
+*.zip
+
+# 📁 Fichiers personnels
+*.bak
+*.tmp

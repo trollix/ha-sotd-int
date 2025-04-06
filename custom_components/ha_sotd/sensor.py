@@ -4,6 +4,8 @@ import json
 import os
 import logging
 
+from .const import DOMAIN
+
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, entry, async_add_entities):
@@ -18,6 +20,7 @@ class SaintOfTheDaySensor(SensorEntity):
         self._state = None
         self._attr_icon = "mdi:church"
         self._attr_should_poll = True
+        self._domain = DOMAIN  # utilisé pour device_info
 
     @property
     def name(self):
@@ -30,7 +33,18 @@ class SaintOfTheDaySensor(SensorEntity):
     @property
     def extra_state_attributes(self):
         return {
-            "date": datetime.date.today().isoformat()
+            "date": datetime.date.today().isoformat(),
+            "language": self._language
+        }
+
+    @property
+    def device_info(self):
+        return {
+            "identifiers": {(self._domain, self._name)},
+            "name": "Saint of the Day",
+            "manufacturer": "Ha-SOTD Project",
+            "model": "Saint Calendar Sensor",
+            "entry_type": "service"
         }
 
     async def async_update(self):
