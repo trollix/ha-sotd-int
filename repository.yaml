@@ -6,4 +6,4 @@ domain: ha-sotd-int
 documentation: https://github.com/trollix/ha-sotd-int
 source: https://github.com/trollix/ha-sotd-int
 type: integration
-version: 0.2.0
+version: 0.2.3
