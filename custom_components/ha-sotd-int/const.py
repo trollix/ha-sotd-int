@@ -1,2 +1,2 @@
-DOMAIN = "ha_sotd_int"
+DOMAIN = "ha-sotd-int"
 DEFAULT_NAME = "Saint du Jour"

@@ -1,10 +1,11 @@
 {
     "domain": "ha_sotd_int",
     "name": "ha - Saint of the Day",
-    "version": "v0.1.0",
-    "documentation": "https://github.com/ton-utilisateur/ha-sotd-int",
+    "version": "v0.2.0",
+    "documentation": "https://github.com/trollix/ha-sotd-int",
     "dependencies": [],
     "config_flow": true,
     "codeowners": ["@trollix"],
-    "requirements": []
+    "requirements": [],
+    "iot_class": "local_polling"
   }

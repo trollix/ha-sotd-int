@@ -1,0 +1,14 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure Saint of the Day sensor",
+        "description": "Select a name and a language.",
+        "data": {
+          "name": "Sensor name",
+          "language": "Language"
+        }
+      }
+    }
+  }
+}

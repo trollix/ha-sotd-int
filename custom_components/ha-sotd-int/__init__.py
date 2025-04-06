@@ -1,16 +1,13 @@
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+
 from .const import DOMAIN
 
-async def async_setup(hass, config):
-    """Set up from configuration.yaml (non utilisé ici)."""
-    return True
-
-async def async_setup_entry(hass, entry):
-    """Set up ha_sotd_int from a config entry."""
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.async_create_task(
         hass.config_entries.async_forward_entry_setup(entry, "sensor")
     )
     return True
 
-async def async_unload_entry(hass, entry):
-    """Unload a config entry."""
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return await hass.config_entries.async_forward_entry_unload(entry, "sensor")
