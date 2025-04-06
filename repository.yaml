@@ -2,8 +2,8 @@ name: Saint of the Day
 author: trollix
 description: >-
   Capteur Home Assistant affichant le saint du jour (calendrier français et autres langues à venir).
-domain: ha_sotd_int
+domain: sotd
 documentation: https://github.com/trollix/ha-sotd-int
 source: https://github.com/trollix/ha-sotd-int
 type: integration
-version: v0.2.5
+version: v0.2.6
