@@ -34,3 +34,4 @@ class SotdConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_get_options_flow(config_entry):
         from .options_flow import SotdOptionsFlowHandler
         return SotdOptionsFlowHandler(config_entry)
+
