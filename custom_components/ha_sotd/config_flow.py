@@ -1,10 +1,7 @@
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 import voluptuous as vol
-import logging
 from .const import DOMAIN
-
-_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = "Saint du jour"
 DEFAULT_LANG = "fr"
@@ -22,7 +19,10 @@ class SotdConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_create_entry(
                 title=user_input[CONF_NAME],
                 data=user_input,
-                options={"language": user_input.get("language", DEFAULT_LANG)}
+                options={
+                    "language": user_input.get("language", DEFAULT_LANG),
+                    "dummy_option": "show_config"
+                }
             )
 
         return self.async_show_form(
@@ -32,4 +32,3 @@ class SotdConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required("language", default=DEFAULT_LANG): vol.In(LANGUAGES)
             })
         )
-
