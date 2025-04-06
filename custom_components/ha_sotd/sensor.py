@@ -31,6 +31,10 @@ class SaintOfTheDaySensor(SensorEntity):
         return self._state
 
     @property
+    def unique_id(self):
+        return f"{self._domain}_{self._name}"
+    
+    @property
     def extra_state_attributes(self):
         return {
             "date": datetime.date.today().isoformat(),
