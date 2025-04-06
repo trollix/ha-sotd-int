@@ -2,7 +2,6 @@ from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 import voluptuous as vol
 from .const import DOMAIN
-from .options_flow import SotdOptionsFlowHandler
 
 DEFAULT_NAME = "Saint du jour"
 DEFAULT_LANG = "fr"
@@ -31,5 +30,7 @@ class SotdConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             })
         )
 
-    async def async_get_options_flow(self, config_entry):
+    @staticmethod
+    async def async_get_options_flow(config_entry):
+        from .options_flow import SotdOptionsFlowHandler
         return SotdOptionsFlowHandler(config_entry)
