@@ -11,7 +11,7 @@ LANGUAGES = {
 
 class SotdOptionsFlowHandler(config_entries.OptionsFlow):
     def __init__(self, config_entry):
-        self.config_entry = config_entry  # ✅ classe normale, pas async
+        self.config_entry = config_entry
 
     async def async_step_init(self, user_input=None):
         if user_input is not None:
@@ -26,3 +26,6 @@ class SotdOptionsFlowHandler(config_entries.OptionsFlow):
                 ): vol.In(LANGUAGES)
             })
         )
+
+def handler(config_entry):
+    return SotdOptionsFlowHandler(config_entry)

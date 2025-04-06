@@ -1,7 +1,10 @@
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 import voluptuous as vol
+import logging
 from .const import DOMAIN
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = "Saint du jour"
 DEFAULT_LANG = "fr"
@@ -32,6 +35,7 @@ class SotdConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     @staticmethod
     async def async_get_options_flow(config_entry):
-        from .options_flow import SotdOptionsFlowHandler
-        return SotdOptionsFlowHandler(config_entry)
-
+        from .options_flow import handler
+        obj = handler(config_entry)
+        _LOGGER.warning(f"[DEBUG] Returned from handler: {type(obj)}")
+        return obj

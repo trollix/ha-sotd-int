@@ -18,7 +18,7 @@ class SaintOfTheDaySensor(SensorEntity):
         self._name = name
         self._language = language
         self._state = None
-        self._attr_icon = "mdi:church"
+        self._attr_icon = "mdi:calendar"
         self._attr_should_poll = True
         self._domain = DOMAIN  # utilisé pour device_info
 
