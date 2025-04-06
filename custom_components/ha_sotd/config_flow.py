@@ -33,9 +33,3 @@ class SotdConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             })
         )
 
-    @staticmethod
-    async def async_get_options_flow(config_entry):
-        from .options_flow import handler
-        obj = handler(config_entry)
-        _LOGGER.warning(f"[DEBUG] Returned from handler: {type(obj)}")
-        return obj
