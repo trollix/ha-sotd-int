@@ -10,7 +10,7 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, entry, async_add_entities):
     name = entry.data.get("name")
-    language = entry.data.get("language", "fr")
+    language = entry.options.get("language", entry.data.get("language", "fr"))
     async_add_entities([SaintOfTheDaySensor(name, language)], True)
 
 class SaintOfTheDaySensor(SensorEntity):
