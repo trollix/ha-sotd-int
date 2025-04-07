@@ -61,7 +61,9 @@ class SaintOfTheDaySensor(SensorEntity):
         try:
             with open(saints_file, encoding="utf-8") as f:
                 data = json.load(f)
-            self._state = data.get(date_key, "Inconnu")
+            #self._state = data.get(date_key, "Inconnu")
+            saints_list = data.get(date_key, [])
+            self._state = saints_list[0] if saints_list else "Inconnu"
             _LOGGER.debug(f"Saint du {date_key} : {self._state}")
         except Exception as e:
             self._state = f"Erreur: {e}"
