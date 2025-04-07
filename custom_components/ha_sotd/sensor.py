@@ -1,6 +1,6 @@
 from homeassistant.components.sensor import SensorEntity
 import datetime
-import json
+import csv
 import os
 import logging
 from .const import DOMAIN
@@ -48,23 +48,25 @@ class SaintOfTheDaySensor(SensorEntity):
             "identifiers": {(self._domain, self._name)},
             "name": "Saint of the Day",
             "manufacturer": "Ha-SOTD Project",
-            "model": "Saint Calendar Sensor",
+            "model": "Saint CSV Calendar",
             "entry_type": "service"
         }
 
     async def async_update(self):
         today = datetime.date.today()
-        month = str(today.month)
-        day = str(today.day)
+        date_key = today.strftime("%d/%m")
         base_path = os.path.dirname(__file__)
-        saints_file = os.path.join(base_path, "data", f"saints_{self._language}.json")
+        saints_file = os.path.join(base_path, "data", f"saints_{self._language}.csv")
 
         try:
             with open(saints_file, encoding="utf-8") as f:
-                data = json.load(f)
-            saints_list = data.get(month, {}).get(day, [])
-            self._state = saints_list[0] if saints_list else "Inconnu"
-            _LOGGER.debug(f"Saint du {month}/{day} : {self._state}")
+                reader = csv.reader(f)
+                for row in reader:
+                    if row and row[0] == date_key:
+                        self._state = row[1]
+                        break
+                else:
+                    self._state = "Inconnu"
         except Exception as e:
             self._state = f"Erreur: {e}"
-            _LOGGER.error(f"Erreur lors du chargement des saints : {e}")
+            _LOGGER.error(f"Erreur lors du chargement du fichier CSV : {e}")
