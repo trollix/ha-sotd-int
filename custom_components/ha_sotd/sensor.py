@@ -57,7 +57,7 @@ class SaintOfTheDaySensor(SensorEntity):
         month = str(today.month)
         day = str(today.day)
         base_path = os.path.dirname(__file__)
-        saints_file = os.path.join(base_path, "data", "saints.json")
+        saints_file = os.path.join(base_path, "data", f"saints_{self._language}.json")
 
         try:
             with open(saints_file, encoding="utf-8") as f:
