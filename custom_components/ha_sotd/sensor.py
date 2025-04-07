@@ -54,17 +54,17 @@ class SaintOfTheDaySensor(SensorEntity):
 
     async def async_update(self):
         today = datetime.date.today()
-        date_key = today.strftime("%m-%d")
+        month = str(today.month)
+        day = str(today.day)
         base_path = os.path.dirname(__file__)
-        saints_file = os.path.join(base_path, "data", f"saints_{self._language}.json")
+        saints_file = os.path.join(base_path, "data", "saints.json")
 
         try:
             with open(saints_file, encoding="utf-8") as f:
                 data = json.load(f)
-            #self._state = data.get(date_key, "Inconnu")
-            saints_list = data.get(date_key, [])
+            saints_list = data.get(month, {}).get(day, [])
             self._state = saints_list[0] if saints_list else "Inconnu"
-            _LOGGER.debug(f"Saint du {date_key} : {self._state}")
+            _LOGGER.debug(f"Saint du {month}/{day} : {self._state}")
         except Exception as e:
             self._state = f"Erreur: {e}"
             _LOGGER.error(f"Erreur lors du chargement des saints : {e}")
