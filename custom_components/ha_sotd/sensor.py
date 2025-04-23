@@ -1,3 +1,5 @@
+
+import random
 from homeassistant.components.sensor import SensorEntity
 import datetime
 import csv
@@ -8,18 +10,17 @@ from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, entry, async_add_entities):
+    show_proverbe = entry.options.get("show_proverbe", entry.data.get("show_proverbe", True))
     name = entry.data.get("name")
     language = entry.options.get("language", entry.data.get("language", "fr"))
     show_dicton = entry.options.get("show_dicton", entry.data.get("show_dicton", True))
-    show_proverbe = entry.options.get("show_proverbe", entry.data.get("show_proverbe", True))
     entry_id = entry.entry_id
 
     sensors = [SaintOfTheDaySensor(name, language, entry_id)]
     if show_dicton:
         sensors.append(DictonOfTheDaySensor(language, entry_id))
-    if show_proverbe:
+        if show_proverbe:
         sensors.append(ProverbeOfTheDaySensor(language, entry_id))
-
     async_add_entities(sensors, True)
 
 class SaintOfTheDaySensor(SensorEntity):
@@ -51,12 +52,21 @@ class SaintOfTheDaySensor(SensorEntity):
             "language": self._language
         }
 
+    @property
+    def device_info(self):
+        return {
+            "identifiers": {(self._domain, self._name)},
+            "name": "Saint of the Day",
+            "manufacturer": "Ha-SOTD Project",
+            "model": "Saint CSV Calendar",
+            "entry_type": "service"
+        }
+
     async def async_update(self):
         today = datetime.date.today()
         date_key = today.strftime("%d/%m")
         base_path = os.path.dirname(__file__)
         saints_file = os.path.join(base_path, "data", f"saints_{self._language}.csv")
-        self._state = "Inconnu"
 
         try:
             with open(saints_file, encoding="utf-8") as f:
@@ -65,9 +75,11 @@ class SaintOfTheDaySensor(SensorEntity):
                     if row and row[0] == date_key:
                         self._state = row[1]
                         break
+                else:
+                    self._state = "Inconnu"
         except Exception as e:
-            _LOGGER.error(f"Erreur chargement saints : {e}")
             self._state = f"Erreur: {e}"
+            _LOGGER.error(f"Erreur lors du chargement du fichier CSV : {e}")
 
 class DictonOfTheDaySensor(SensorEntity):
     def __init__(self, language, entry_id):
@@ -108,18 +120,26 @@ class DictonOfTheDaySensor(SensorEntity):
                 reader = csv.reader(f)
                 for row in reader:
                     if row and row[0] == date_key:
-                        self._state = row[1]
+                        dictons = row[1:]  # toutes les colonnes après la date
+                        dictons = [d.strip() for d in dictons if d.strip()]
+                        if dictons:
+                            self._state = random.choice(dictons)
+                        else:
+                            self._state = "Aucun dicton trouvé."
                         break
+                else:
+                    self._state = "Aucun dicton pour aujourd'hui."
         except Exception as e:
-            _LOGGER.warning(f"Erreur chargement dictons : {e}")
             self._state = f"Erreur: {e}"
+            _LOGGER.warning(f"Erreur chargement dictons : {e}")
+
 
 class ProverbeOfTheDaySensor(SensorEntity):
     def __init__(self, language, entry_id):
         self._language = language
         self._entry_id = entry_id
         self._state = None
-        self._attr_icon = "mdi:book-open-variant"
+        self._attr_icon = "mdi:format-quote-close"
         self._attr_should_poll = True
         self._domain = DOMAIN
 
@@ -153,8 +173,15 @@ class ProverbeOfTheDaySensor(SensorEntity):
                 reader = csv.reader(f)
                 for row in reader:
                     if row and row[0] == date_key:
-                        self._state = row[1]
+                        proverbes = row[1:]
+                        proverbes = [p.strip() for p in proverbes if p.strip()]
+                        if proverbes:
+                            self._state = random.choice(proverbes)
+                        else:
+                            self._state = "Aucun proverbe trouvé."
                         break
+                else:
+                    self._state = "Aucun proverbe pour aujourd'hui."
         except Exception as e:
-            _LOGGER.warning(f"Erreur chargement proverbes : {e}")
             self._state = f"Erreur: {e}"
+            _LOGGER.warning(f"Erreur chargement proverbes : {e}")
