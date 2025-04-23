@@ -12,21 +12,25 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass, entry, async_add_entities):
     _LOGGER.debug("🔧 async_setup_entry() called")
     try:
-    show_proverbe = entry.options.get("show_proverbe", entry.data.get("show_proverbe", True))
-    name = entry.data.get("name")
-    language = entry.options.get("language", entry.data.get("language", "fr"))
-    show_dicton = entry.options.get("show_dicton", entry.data.get("show_dicton", True))
-    entry_id = entry.entry_id
+        name = entry.data.get("name")
+        language = entry.options.get("language", entry.data.get("language", "fr"))
+        show_dicton = entry.options.get("show_dicton", entry.data.get("show_dicton", True))
+        show_proverbe = entry.options.get("show_proverbe", entry.data.get("show_proverbe", True))
+        entry_id = entry.entry_id
 
         sensors = [SaintOfTheDaySensor(name, language, entry_id)]
         if show_dicton:
-        sensors.append(DictonOfTheDaySensor(language, entry_id))
-            if show_proverbe:
-        sensors.append(ProverbeOfTheDaySensor(language, entry_id))
-            _LOGGER.debug(f"🔧 Adding sensors: {[s.name for s in sensors]}")
-                async_add_entities(sensors, True)
+            sensors.append(DictonOfTheDaySensor(language, entry_id))
+        if show_proverbe:
+            sensors.append(ProverbeOfTheDaySensor(language, entry_id))
 
-class SaintOfTheDaySensor(SensorEntity):
+        _LOGGER.debug(f"🔧 Adding sensors: {[s.name for s in sensors]}")
+        async_add_entities(sensors, True)
+    except Exception as e:
+        _LOGGER.error(f"❌ async_setup_entry failed: {e}")
+        raise
+
+(SensorEntity):
     def __init__(self, name, language, entry_id):
         self._name = name
         self._language = language
