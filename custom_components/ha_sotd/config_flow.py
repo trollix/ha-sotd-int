@@ -1,3 +1,4 @@
+
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 import voluptuous as vol
@@ -15,7 +16,8 @@ LANGUAGES = {
 CONFIG_SCHEMA = vol.Schema({
     vol.Required(CONF_NAME, default=DEFAULT_NAME): str,
     vol.Required("language", default=DEFAULT_LANG): vol.In(LANGUAGES),
-    vol.Optional("show_dicton", default=True): bool
+    vol.Optional("show_dicton", default=True): bool,
+    vol.Optional("show_proverbe", default=True): bool
 })
 
 class SotdConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -28,7 +30,8 @@ class SotdConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 data={
                     CONF_NAME: user_input[CONF_NAME],
                     "language": user_input["language"],
-                    "show_dicton": user_input.get("show_dicton", True)
+                    "show_dicton": user_input.get("show_dicton", True),
+                    "show_proverbe": user_input.get("show_proverbe", True)
                 }
             )
 
@@ -64,6 +67,10 @@ class SotdOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     "show_dicton",
                     default=self.config_entry.options.get("show_dicton", True)
+                ): bool,
+                vol.Optional(
+                    "show_proverbe",
+                    default=self.config_entry.options.get("show_proverbe", True)
                 ): bool
             })
         )
