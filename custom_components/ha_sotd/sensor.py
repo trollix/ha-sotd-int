@@ -30,7 +30,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
         _LOGGER.error(f"❌ async_setup_entry failed: {e}")
         raise
 
-(SensorEntity):
+class SaintOfTheDaySensor(SensorEntity):
     def __init__(self, name, language, entry_id):
         self._name = name
         self._language = language
@@ -127,7 +127,7 @@ class DictonOfTheDaySensor(SensorEntity):
                 reader = csv.reader(f)
                 for row in reader:
                     if row and row[0] == date_key:
-                        dictons = row[1:]  # toutes les colonnes après la date
+                        dictons = row[1:]
                         dictons = [d.strip() for d in dictons if d.strip()]
                         if dictons:
                             self._state = random.choice(dictons)
@@ -139,7 +139,6 @@ class DictonOfTheDaySensor(SensorEntity):
         except Exception as e:
             self._state = f"Erreur: {e}"
             _LOGGER.warning(f"Erreur chargement dictons : {e}")
-
 
 class ProverbeOfTheDaySensor(SensorEntity):
     def __init__(self, language, entry_id):
