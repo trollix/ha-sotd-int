@@ -1,3 +1,4 @@
+
 from homeassistant.components.sensor import SensorEntity
 import datetime
 import csv
@@ -17,14 +18,14 @@ async def async_setup_entry(hass, entry, async_add_entities):
         SaintOfTheDaySensor(name, language, entry_id, show_dicton)
     ], True)
 
-
 class SaintOfTheDaySensor(SensorEntity):
-    def __init__(self, name, language, entry_id):
+    def __init__(self, name, language, entry_id, show_dicton):
         self._name = name
         self._language = language
         self._entry_id = entry_id
-        self._state = None
         self._show_dicton = show_dicton
+        self._state = None
+        self._dicton = None
         self._attr_icon = "mdi:calendar"
         self._attr_should_poll = True
         self._domain = DOMAIN
@@ -43,10 +44,13 @@ class SaintOfTheDaySensor(SensorEntity):
 
     @property
     def extra_state_attributes(self):
-        return {
+        attrs = {
             "date": datetime.date.today().isoformat(),
-            "language": self._language
+            "language": self._language,
         }
+        if self._show_dicton and self._dicton:
+            attrs["dicton"] = self._dicton
+        return attrs
 
     @property
     def device_info(self):
@@ -63,6 +67,10 @@ class SaintOfTheDaySensor(SensorEntity):
         date_key = today.strftime("%d/%m")
         base_path = os.path.dirname(__file__)
         saints_file = os.path.join(base_path, "data", f"saints_{self._language}.csv")
+        dictons_file = os.path.join(base_path, "data", f"dictons_{self._language}.csv")
+
+        self._state = "Inconnu"
+        self._dicton = None
 
         try:
             with open(saints_file, encoding="utf-8") as f:
@@ -71,8 +79,17 @@ class SaintOfTheDaySensor(SensorEntity):
                     if row and row[0] == date_key:
                         self._state = row[1]
                         break
-                else:
-                    self._state = "Inconnu"
         except Exception as e:
+            _LOGGER.error(f"Erreur chargement saints : {e}")
             self._state = f"Erreur: {e}"
-            _LOGGER.error(f"Erreur lors du chargement du fichier CSV : {e}")
+
+        if self._show_dicton:
+            try:
+                with open(dictons_file, encoding="utf-8") as f:
+                    reader = csv.reader(f)
+                    for row in reader:
+                        if row and row[0] == date_key:
+                            self._dicton = row[1]
+                            break
+            except Exception as e:
+                _LOGGER.warning(f"Pas de dicton : {e}")
