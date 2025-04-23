@@ -130,7 +130,8 @@ class DictonOfTheDaySensor(SensorEntity):
                         dictons = row[1:]
                         dictons = [d.strip() for d in dictons if d.strip()]
                         if dictons:
-                            self._state = random.choice(dictons)
+                            index = hash(f"{date_key}-{self._entry_id}") % len(dictons)
+                            self._state = dictons[index]
                         else:
                             self._state = "Aucun dicton trouvé."
                         break
@@ -182,7 +183,8 @@ class ProverbeOfTheDaySensor(SensorEntity):
                         proverbes = row[1:]
                         proverbes = [p.strip() for p in proverbes if p.strip()]
                         if proverbes:
-                            self._state = random.choice(proverbes)
+                            index = hash(f"{date_key}-{self._entry_id}") % len(proverbes)
+                            self._state = proverbes[index]
                         else:
                             self._state = "Aucun proverbe trouvé."
                         break
