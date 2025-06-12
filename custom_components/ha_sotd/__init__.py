@@ -1,16 +1,22 @@
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.typing import ConfigType
 from .const import DOMAIN
 
-async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    return True
-
+# ---------- SETUP ---------- #
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "sensor")
-    )
+    """Set up ha_sotd from a config entry."""
+    # Nouvelle API (HA >= 2025.06)
+    if hasattr(hass.config_entries, "async_forward_entry_setups"):
+        await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
+    # Ancienne API (jusqu’à 2025.05)
+    else:  # pragma: no cover
+        await hass.config_entries.async_forward_entry_setup(entry, "sensor")
     return True
 
+# ---------- UNLOAD ---------- #
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    return await hass.config_entries.async_forward_entry_unload(entry, "sensor")
+    """Unload ha_sotd config entry."""
+    if hasattr(hass.config_entries, "async_forward_entry_unloads"):
+        return await hass.config_entries.async_forward_entry_unloads(entry, ["sensor"])
+    # Ancienne API
+    return await hass.config_entries.async_forward_entry_unload(entry, "sensor")  # pragma: no cover
